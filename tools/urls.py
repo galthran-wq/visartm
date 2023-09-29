@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.urls import re_path
 import tools.views as tools_views
 
 urlpatterns = [
-    url(r'^$', tools_views.tools_list),
-    url(r'^vw2uci', tools_views.vw2uci),
-    url(r'^uci2vw', tools_views.uci2vw),
-    url(r'^vkloader', tools_views.vkloader),
+    re_path(r'^$', tools_views.tools_list),
+    re_path(r'^vw2uci', tools_views.vw2uci),
+    re_path(r'^uci2vw', tools_views.uci2vw),
+    re_path(r'^vkloader', tools_views.vkloader),
 ]

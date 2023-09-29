@@ -25,8 +25,8 @@ class AssessmentProblem(models.Model):
     modules = {}
 
     type = models.TextField()
-    dataset = models.ForeignKey(Dataset, null=False)
-    model = models.ForeignKey(ArtmModel, null=True, blank=True)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False)
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=True, blank=True)
     layer = models.IntegerField(null=True, blank=True)
 
     description = models.TextField(null=False, default="", blank=True)
@@ -168,9 +168,9 @@ def remove_problem_files(sender, instance, using, **kwargs):
 
 
 class AssessmentTask(models.Model):
-    problem = models.ForeignKey(AssessmentProblem, null=False)
-    assessor = models.ForeignKey(User, null=False, default=0)
-    document = models.ForeignKey(Document, null=True)
+    problem = models.ForeignKey(AssessmentProblem, on_delete=models.CASCADE, null=False)
+    assessor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, default=0)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, null=True)
     question = models.TextField(null=True)
     answer = models.TextField(null=False, default="{}")
     creation_time = models.DateTimeField(null=False, default=datetime.now)
@@ -211,16 +211,16 @@ class AssessmentTask(models.Model):
 
 
 class ProblemAssessor(models.Model):
-    problem = models.ForeignKey(AssessmentProblem, null=False)
-    assessor = models.ForeignKey(User, null=False)
+    problem = models.ForeignKey(AssessmentProblem, on_delete=models.CASCADE, null=False)
+    assessor = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
 
     class Meta:
         unique_together = ('problem', 'assessor')
 
 
 class ExamVerification(models.Model):
-    problem = models.ForeignKey(AssessmentProblem, null=False)
-    assessor = models.ForeignKey(User, null=False, default=0)
+    problem = models.ForeignKey(AssessmentProblem, on_delete=models.CASCADE, null=False)
+    assessor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, default=0)
     passed = models.BooleanField(null=False, default=False)
 
 

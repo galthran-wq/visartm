@@ -15,10 +15,10 @@ from django.contrib import admin
 
 
 class Research(models.Model):
-    dataset = models.ForeignKey(Dataset, null=True, blank=True)
-    model = models.ForeignKey(ArtmModel, null=True, blank=True)
-    problem = models.ForeignKey(AssessmentProblem, null=True, blank=True)
-    researcher = models.ForeignKey(User, null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=True, blank=True)
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=True, blank=True)
+    problem = models.ForeignKey(AssessmentProblem, on_delete=models.CASCADE, null=True, blank=True)
+    researcher = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     script_name = models.TextField(null=False)
     start_time = models.DateTimeField(null=False, default=datetime.now)
     finish_time = models.DateTimeField(null=True, blank=True)

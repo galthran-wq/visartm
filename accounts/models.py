@@ -4,7 +4,7 @@ from django.contrib import admin
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.TextField(null=True, blank=True)
     last_name = models.TextField(null=True, blank=True)
     assessor_rating = models.IntegerField(default=0)

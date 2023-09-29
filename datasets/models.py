@@ -12,6 +12,7 @@ import struct
 import re
 from django.contrib import admin
 from django.db.models.signals import pre_delete
+from django.db import models
 from django.dispatch import receiver
 
 
@@ -19,7 +20,7 @@ class Dataset(models.Model):
     name = models.CharField('Name', max_length=50)
     text_id = models.TextField(unique=True, null=False)
     description = models.TextField('Description')
-    owner = models.ForeignKey(User, null=False, default=0)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False, default=0)
     terms_count = models.IntegerField(default=0)
     documents_count = models.IntegerField(default=0)
     modalities_count = models.IntegerField(default=0)
@@ -528,7 +529,7 @@ class Document(models.Model):
     text_id = models.TextField(null=True)
 
     # Dataset, to which this document belongs.
-    dataset = models.ForeignKey(Dataset, null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False)
 
     # [4 bytes term.index_id][2 bytes count][1 byte modality.index_id]
     bag_of_words = models.BinaryField(null=True)
@@ -820,7 +821,7 @@ class Document(models.Model):
 
 class Modality(models.Model):
     name = models.TextField(null=False)
-    dataset = models.ForeignKey(Dataset, null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False)
     terms_count = models.IntegerField(null=False, default=0)
     index_id = models.IntegerField(null=False, default=0)
     is_tag = models.BooleanField(null=False, default=False)
@@ -834,8 +835,8 @@ class Modality(models.Model):
 
 class Term(models.Model):
     text = models.TextField(null=False)
-    modality = models.ForeignKey(Modality, null=False)
-    dataset = models.ForeignKey(Dataset, null=False)
+    modality = models.ForeignKey(Modality, on_delete=models.CASCADE, null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False)
     # id in UCI files and word_index files
     index_id = models.IntegerField(null=False)
     token_value = models.FloatField(default=0)

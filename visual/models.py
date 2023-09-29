@@ -12,7 +12,7 @@ from django.contrib import admin
 
 
 class GlobalVisualization(models.Model):
-    model = models.ForeignKey(ArtmModel, null=False)
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=False)
     name = models.TextField(null=False, default='none')
     # 0-processing; 1-ready; 2-error.
     status = models.IntegerField(null=False, default=0)
@@ -55,16 +55,16 @@ class GlobalVisualization(models.Model):
 
 
 class Polygon(models.Model):
-    vis = models.ForeignKey(GlobalVisualization, null=False)
+    vis = models.ForeignKey(GlobalVisualization, on_delete=models.CASCADE, null=False)
     points = models.TextField(null=True)
     rect_width = models.IntegerField(null=False, default=0)
     rect_height = models.IntegerField(null=False, default=0)
     rect_top = models.IntegerField(null=False, default=0)
     rect_left = models.IntegerField(null=False, default=0)
-    parent = models.ForeignKey("self", null=True)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
     # label = models.TextField(null = True)
-    topic = models.ForeignKey(Topic, null=True)
-    document = models.ForeignKey(Document, null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, null=True)
     children_placed = models.BooleanField(null=False, default=False)
 
     @transaction.atomic

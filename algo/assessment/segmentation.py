@@ -484,7 +484,7 @@ def save_answer(task):
 # Specific models for segmentation assessment
 
 class Segmentation_Topic(models.Model):
-    problem = models.ForeignKey("AssessmentProblem", null=False)
+    problem = models.ForeignKey("AssessmentProblem", on_delete=models.CASCADE, null=False)
     name = models.TextField(null=False, default="New topic")
     description = models.TextField(null=False, default="Description")
     index_id = models.IntegerField(null=False, default=0)
@@ -501,7 +501,7 @@ class Segmentation_Topic(models.Model):
 
 
 class Segmentation_TypicalSegment(models.Model):
-    problem = models.ForeignKey("AssessmentProblem", null=False, default=0)
+    problem = models.ForeignKey("AssessmentProblem", on_delete=models.CASCADE, null=False, default=0)
     first_term_id = models.IntegerField(null=False, default=0)
     terms = models.TextField(null=False, default="")
     topics = models.TextField(null=False, default="")

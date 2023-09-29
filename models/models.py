@@ -21,12 +21,12 @@ from django.contrib import admin
 
 
 class ArtmModel(models.Model):
-    dataset = models.ForeignKey(Dataset, null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, null=False)
     creation_time = models.DateTimeField(null=False, default=datetime.now)
     text_id = models.TextField(null=False, default="")
     # main_modality = models.ForeignKey(Modality, null = True)
     name = models.TextField(null=True)
-    author = models.ForeignKey(User, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     layers_count = models.IntegerField(default=1)
     topics_count = models.TextField(null=False, default="")
     # 0-ready,  1-running, 2-error, 3-empty, 11-running, but not critical
@@ -1118,7 +1118,7 @@ def remove_model_files(sender, instance, using, **kwargs):
 
 
 class Topic(models.Model):
-    model = models.ForeignKey(ArtmModel, null=False)
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=False)
     index_id = models.IntegerField(null=True)  # in layer
     matrix_id = models.IntegerField(null=True)  # In matrix
     title = models.TextField(null=False)
@@ -1174,9 +1174,9 @@ class Topic(models.Model):
 
 
 class TopicInDocument(models.Model):
-    model = models.ForeignKey(ArtmModel, null=False)
-    document = models.ForeignKey(Document, null=False)
-    topic = models.ForeignKey(Topic, null=False)
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=False)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, null=False)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False)
     probability = models.FloatField(default=0)
 
     def __str__(self):
@@ -1185,17 +1185,17 @@ class TopicInDocument(models.Model):
 
 
 class TopicInTopic(models.Model):
-    model = models.ForeignKey(ArtmModel, null=False)
-    parent = models.ForeignKey(Topic, null=False, related_name='parent')
-    child = models.ForeignKey(Topic, null=False, related_name='child')
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=False)
+    parent = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False, related_name='parent')
+    child = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False, related_name='child')
     weight = models.FloatField(default=0)
     is_main = models.BooleanField(default=True)
 
 
 class TopicRelated(models.Model):
-    model = models.ForeignKey(ArtmModel, null=False)
-    topic1 = models.ForeignKey(Topic, null=False, related_name='fk1')
-    topic2 = models.ForeignKey(Topic, null=False, related_name='fk2')
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=False)
+    topic1 = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False, related_name='fk1')
+    topic2 = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False, related_name='fk2')
     weight = models.FloatField()
 
     def __str__(self):
@@ -1203,16 +1203,16 @@ class TopicRelated(models.Model):
 
 
 class TopTerm(models.Model):
-    topic = models.ForeignKey(Topic)
-    term = models.ForeignKey(Term)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE)
     weight = models.FloatField(default=0)
     weight_normed = models.FloatField(default=0)
 
 
 class TopicInTerm(models.Model):
-    model = models.ForeignKey(ArtmModel, null=False)
-    topic = models.ForeignKey(Topic, null=False)
-    term = models.ForeignKey(Term, null=False)
+    model = models.ForeignKey(ArtmModel, on_delete=models.CASCADE, null=False)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE, null=False)
     weight = models.FloatField()
 
     def __str__(self):

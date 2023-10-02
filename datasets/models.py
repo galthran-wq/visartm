@@ -308,7 +308,7 @@ class Dataset(models.Model):
         return batch_vectorizer, dictionary
 
     def objects_safe(request):
-        if request.user.is_anonymous():
+        if request.user.is_anonymous:
             return Dataset.objects.filter(is_public=True)
         else:
             return Dataset.objects.filter(is_public=True) |\
@@ -643,7 +643,7 @@ class Document(models.Model):
         self.unique_terms_count = len(self.bag_of_words) // 7
 
     def objects_safe(request):
-        if request.user.is_anonymous():
+        if request.user.is_anonymous:
             return Document.objects.filter(dataset__is_public=True)
         else:
             return (Document.objects.filter(dataset__is_public=True) |

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.template import RequestContext, Context, loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
@@ -49,7 +48,7 @@ def logout_view(request):
 def signup(request):
     if request.method == 'GET':
         context = {"captcha": not settings.DEBUG}
-        return render(request, 'accounts/signup.html', Context(context))
+        return render(request, 'accounts/signup.html', (context))
 
     username = request.POST['username']
     password = request.POST['password']
@@ -121,7 +120,7 @@ def account_view(request, user_name):
                         "value": account.has_perm("models.add_artmmodel")})
     context["permissions"] = permissions
 
-    return render(request, 'accounts/account.html', Context(context))
+    return render(request, 'accounts/account.html', (context))
 
 
 def group_view(request, group_id):
@@ -130,7 +129,7 @@ def group_view(request, group_id):
         'group': group,
         'users': group.user_set.all()
     }
-    return render(request, 'accounts/group.html', Context(context))
+    return render(request, 'accounts/group.html', (context))
 
 
 def sendmail(request):

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect
 from datasets.models import Dataset, Modality, Term
-from django.template import RequestContext, Context, loader
+from django.template import loader
 from django.http import (
     HttpResponse,
     HttpResponseNotFound,
@@ -89,7 +89,7 @@ def visual_model(request):
         for i in range(0, model.layers_count)
     ]
     template = loader.get_template('models/model.html')
-    context = Context({'model': model, 'topics_layers': topics_layers})
+    context = ({'model': model, 'topics_layers': topics_layers})
     from algo.arranging.metrics import metrics_list
     context["metrics"] = metrics_list
     return render(request, 'models/model.html', context)
@@ -196,7 +196,7 @@ def create_model(request):
         except BaseException:
             pass
 
-        context = Context({'dataset': dataset,
+        context = ({'dataset': dataset,
                            'modalities': modalities,
                            'scripts': scripts,
                            'unreg': unreg})
@@ -344,7 +344,7 @@ def visual_topic(request):
     context['low_level'] = (topic.layer == model.layers_count)
     context['mode'] = mode
 
-    return render(request, 'models/topic.html', Context(context))
+    return render(request, 'models/topic.html', (context))
 
 
 def dump_model(request):
@@ -393,7 +393,7 @@ def related_topics(request):
         "metric": metric}
     context["topics"] = model.get_related_topics(topic, metric=metric)
 
-    return render(request, 'models/related_topics.html', Context(context))
+    return render(request, 'models/related_topics.html', (context))
 
 
 @login_required
@@ -460,7 +460,7 @@ def model_settings(request):
     if request.user != model.author:
         return HttpResponseForbidden("You are not the author.")
     context = {'model': model}
-    return render(request, 'models/model_settings.html', Context(context))
+    return render(request, 'models/model_settings.html', (context))
 
 
 def delete_cached_distances(request):

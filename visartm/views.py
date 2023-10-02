@@ -10,10 +10,10 @@ from datasets.models import Dataset
 
 
 def start_page(request):
-    return render(request, 'index.html', Context({
+    return render(request, 'index.html', {
         'datasets': Dataset.objects.filter(is_public=True),
         'no_footer': True
-    }))
+    })
 
 
 def settings_page(request):
@@ -23,7 +23,7 @@ def settings_page(request):
                 settings.BASE_DIR,
                 "static",
                 "themes")) if ".js" in f]
-    context = Context({'themes': themes})
+    context = {'themes': themes}
     return render(request, 'settings.html', context)
 
 
@@ -35,7 +35,7 @@ def message(request, message):
     return render(
         request,
         'message.html',
-        Context({'message': message})
+        {'message': message}
     )
 
 

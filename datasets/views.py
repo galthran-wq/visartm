@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.template import RequestContext, Context, loader
 from django.http import (
     HttpResponse,
     HttpResponseNotFound,
@@ -22,7 +21,7 @@ def datasets_list(request):
     if request.user.is_authenticated:
         datasets |= Dataset.objects.filter(owner=request.user)
 
-    context = Context({'datasets': datasets})
+    context = ({'datasets': datasets})
     return render(request, 'datasets/datasets_list.html', context)
 
 
@@ -80,7 +79,7 @@ def dataset_create(request):
                 i not in existing_datasets) and (
                 not i[0] == '.')]
 
-        context = Context({
+        context = ({
             'unreg': unreg,
             'languages': settings.LANGUAGES
         })
@@ -302,7 +301,7 @@ def visual_dataset(request):
             id=request.COOKIES["model_" + str(dataset.id)])
     except BaseException:
         pass
-    return render(request, 'datasets/dataset.html', Context(context))
+    return render(request, 'datasets/dataset.html', (context))
 
 
 def document_all_topics(request):
@@ -328,7 +327,7 @@ def document_all_topics(request):
     return render(
         request,
         'datasets/document_all_topics.html',
-        Context(context))
+        (context))
 
 
 def visual_document(request):
@@ -533,7 +532,7 @@ def visual_document(request):
         context['segmentation_available'] = model.segmentation_available(
             document)
 
-    response = render(request, 'datasets/document.html', Context(context))
+    response = render(request, 'datasets/document.html', (context))
     if "model_id" in request.GET:
         response.set_cookie("model_" + str(dataset.id),
                             request.GET["model_id"])
@@ -578,7 +577,7 @@ def document_segments(request):
 
     text_result = 0
 
-    return render(request, 'datasets/document_segments.html', Context(context))
+    return render(request, 'datasets/document_segments.html', (context))
 
 
 def visual_term(request):
@@ -640,7 +639,7 @@ def visual_term(request):
                 term, ), daemon=True)
         t.start()
 
-    return render(request, 'datasets/term.html', Context(context))
+    return render(request, 'datasets/term.html', (context))
 
 
 def visual_modality(request):
@@ -648,7 +647,7 @@ def visual_modality(request):
     context = {"modality": modality}
     context["terms"] = Term.objects.filter(
         modality=modality).order_by("-token_tf")[:100]
-    return render(request, 'datasets/modality.html', Context(context))
+    return render(request, 'datasets/modality.html', (context))
 
 
 def download_vw(request):
@@ -767,4 +766,4 @@ def global_search(request):
         if total_found > 0:
             context['message'] = "Found " + str(total_found) + " results."
 
-    return render(request, 'datasets/search.html', Context(context))
+    return render(request, 'datasets/search.html', (context))

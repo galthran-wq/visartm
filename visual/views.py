@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.template import Context
 from threading import Thread
 from django.conf import settings
 import os
@@ -78,7 +77,7 @@ def visual_global(request):
         visual_name + ".txt")
     with open(data_file_name, "r", encoding='utf-8') as f:
         data = f.read()
-    context = Context({'dataset': dataset,
+    context = ({'dataset': dataset,
                        'model': model,
                        'data': data,
                        'no_footer': True})

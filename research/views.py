@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import (HttpResponseForbidden, HttpResponseNotFound,
                          HttpResponse)
-from django.template import Context
 import os
 from threading import Thread
 from datetime import datetime
@@ -18,7 +17,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 def researches(request):
     context = {"researches": Research.objects.all().order_by("id")}
     context["datasets"] = Dataset.objects.all()
-    return render(request, 'research/researches.html', Context(context))
+    return render(request, 'research/researches.html', (context))
 
 
 @login_required
@@ -65,7 +64,7 @@ def create_research(request):
             "research"))
     script_names = [s for s in script_names if not s[0] == "_"]
 
-    context = Context({"dataset": dataset,
+    context = ({"dataset": dataset,
                        "model": model,
                        "models": models,
                        "problems": problems,

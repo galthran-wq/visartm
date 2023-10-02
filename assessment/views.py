@@ -1,7 +1,6 @@
 ﻿from django.shortcuts import render, redirect
 from django.http import (HttpResponseForbidden, HttpResponse,
                          HttpResponseNotFound)
-from django.template import Context
 from django.contrib.auth.decorators import login_required
 
 from datetime import datetime
@@ -39,7 +38,7 @@ def problems_list(request):
             "templates",
             "assessment"))
     context["types"] = [x for x in assessment_folder if '.' not in x]
-    return render(request, 'assessment/problems_list.html', Context(context))
+    return render(request, 'assessment/problems_list.html', (context))
 
 
 @login_required
@@ -74,7 +73,7 @@ def problem(request):
                 "assessment",
                 problem.type,
                 "settings.html"),
-            Context(context))
+            (context))
     elif "mode" in request.GET and request.GET["mode"] == "report":
         if problem.type == "segmentation":
             context = problem.get_report_context()
@@ -84,7 +83,7 @@ def problem(request):
                     "assessment",
                     problem.type,
                     "report.html"),
-                Context(context))
+                (context))
         else:
             return HttpResponse("Reports on this problem are not provided.")
     elif "mode" in request.GET and request.GET["mode"] == "assessor_report":
@@ -97,7 +96,7 @@ def problem(request):
                 problem=problem)]
         for assessor in assessors:
             not_assessors.remove(assessor)
-        context = Context({
+        context = ({
             "problem": problem,
             "assessors": assessors,
             "not_assessors": not_assessors,
@@ -216,7 +215,7 @@ def task(request):
 
     return render(
         request, os.path.join(
-            "assessment", task.problem.type, "assessor.html"), Context(
+            "assessment", task.problem.type, "assessor.html"), (
             task.get_view_context()))
 
 
@@ -266,7 +265,7 @@ def instructions(request):
             "You are not authorized to assess this problem.")
     return render(
         request, os.path.join(
-            "assessment", problem.type, "instructions.html"), Context(
+            "assessment", problem.type, "instructions.html"), (
             problem.get_view_context()))
 
 
